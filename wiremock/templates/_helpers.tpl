@@ -2,7 +2,7 @@
 Expand the name of the chart.
 */}}
 {{- define "wiremock.name" -}}
-{{- default .Chart.Name .Values.wiremock.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
@@ -11,10 +11,10 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 If release name contains chart name it will be used as a full name.
 */}}
 {{- define "wiremock.fullname" -}}
-{{- if .Values.wiremock.fullnameOverride }}
-{{- .Values.wiremock.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- if .Values.fullnameOverride }}
+{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
-{{- $name := default .Chart.Name .Values.wiremock.nameOverride }}
+{{- $name := default .Chart.Name .Values.nameOverride }}
 {{- if contains $name .Release.Name }}
 {{- .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -54,10 +54,10 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Create the name of the service account to use
 */}}
 {{- define "wiremock.serviceAccountName" -}}
-{{- if .Values.wiremock.serviceAccount.create }}
-{{- default (include "wiremock.fullname" .) .Values.wiremock.serviceAccount.name }}
+{{- if .Values.serviceAccount.create }}
+{{- default (include "wiremock.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
-{{- default "default" .Values.wiremock.serviceAccount.name }}
+{{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
 
@@ -65,10 +65,10 @@ Create the name of the service account to use
 Pod annotations
 */}}
 {{- define "wiremock.podAnnotations" -}}
-checksum/configMappings: {{ include (print $.Template.BasePath "/wiremock/configmap-mappings.yaml") . | sha256sum }}
-checksum/configResponses: {{ include (print $.Template.BasePath "/wiremock/configmap-responses.yaml") . | sha256sum }}
-{{- if .Values.wiremock.podAnnotations }}
-{{ .Values.wiremock.podAnnotations }}
+checksum/configMappings: {{ include (print $.Template.BasePath "/configmap-mappings.yaml") . | sha256sum }}
+checksum/configResponses: {{ include (print $.Template.BasePath "/configmap-responses.yaml") . | sha256sum }}
+{{- if .Values.podAnnotations }}
+{{ .Values.podAnnotations }}
 {{- end }}
 {{- end }}
 

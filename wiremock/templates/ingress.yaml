@@ -1,9 +1,9 @@
-{{- if .Values.wiremock.ingress.enabled -}}
+{{- if .Values.ingress.enabled -}}
 {{- $fullName := include "wiremock.fullname" . -}}
-{{- $svcPort := .Values.wiremock.service.ports.targetPort -}}
-{{- if and .Values.wiremock.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
-  {{- if not (hasKey .Values.wiremock.ingress.annotations "kubernetes.io/ingress.class") }}
-  {{- $_ := set .Values.wiremock.ingress.annotations "kubernetes.io/ingress.class" .Values.wiremock.ingress.className}}
+{{- $svcPort := .Values.service.externalPort -}}
+{{- if and .Values.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
+  {{- if not (hasKey .Values.ingress.annotations "kubernetes.io/ingress.class") }}
+  {{- $_ := set .Values.ingress.annotations "kubernetes.io/ingress.class" .Values.ingress.className}}
   {{- end }}
 {{- end }}
 {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
@@ -15,29 +15,29 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ .Values.wiremock.ingress.name }}
+  name: {{ $fullName }}
   labels:
     {{- include "wiremock.labels" . | nindent 4 }}
-  {{- with .Values.wiremock.ingress.annotations }}
+  {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if and .Values.wiremock.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
-  ingressClassName: {{ .Values.wiremock.ingress.className }}
+  {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
+  ingressClassName: {{ .Values.ingress.className }}
   {{- end }}
-  {{- if .Values.wiremock.ingress.tls }}
+  {{- if .Values.ingress.tls }}
   tls:
-    {{- range .Values.wiremock.ingress.tls }}
+    {{- range .Values.ingress.tls }}
     - hosts:
-        {{- range .Values.wiremock.ingress.hosts }}
+        {{- range .hosts }}
         - {{ . | quote }}
         {{- end }}
       secretName: {{ .secretName }}
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.wiremock.ingress.hosts }}
+    {{- range .Values.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:
@@ -49,11 +49,11 @@ spec:
             backend:
               {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
-                name: {{ .Values.wiremock.serviceAccount.name }}
+                name: {{ $fullName }}
                 port:
                   number: {{ $svcPort }}
               {{- else }}
-              serviceName: {{ .Values.wiremock.serviceAccount.name }}
+              serviceName: {{ $fullName }}
               servicePort: {{ $svcPort }}
               {{- end }}
           {{- end }}
