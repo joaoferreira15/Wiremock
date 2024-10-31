@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ .Values.mysql_instance_local.configMap.name }}
-data:
-  JAVA_HOME: "/usr/local/openjdk-21"
