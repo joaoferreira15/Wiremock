@@ -25,4 +25,4 @@ spec:
         name: memory
         targetAverageUtilization: {{ .Values.wiremock_istance_local.autoscaling.targetMemoryUtilizationPercentage }}
     {{- end }}
-{{- end }}
+{{- end }}S

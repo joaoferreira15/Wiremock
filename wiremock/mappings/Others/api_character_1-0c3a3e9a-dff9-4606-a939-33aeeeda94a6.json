@@ -1,0 +1,31 @@
+{
+  "id" : "0c3a3e9a-dff9-4606-a939-33aeeeda94a6",
+  "name" : "api_character_1",
+  "request" : {
+    "url" : "/api/character/1",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 200,
+    "body" : "�\u0000��~�V��~u�h��tX�w���\u0010\u0010�^,\u0017�W��\u0006��kr7\u0006kc\u0013��\u0005�n���#f41\u0014��'\f��h0M�\u000E\u0014��(�H�V�s��j�֛\u0015\u0014����#��;�A\u0007\u001B�$\u0004I��<\u00140�u?�.�xJc���.�t�/�i��g�{\u001B����f9~4⨌������l�>�����i>�\u0015V|��@�n��~�N��8�u�+�Z\u0011g3�\u001D��Lc�GK�7�\f;=\u0018��<藡L�3>�@�b%*W�*U���\u0000\u0016\u00191f�rV��UG�\"#F�\u00181bĈ\u0011#F�\u00193f̘1cƌ\u00193a\t\u0013&L�0a��0��'�Z˞b�g�h\u0013�2m��h�\u0014'�R�\u0014�����\u0001\u0003",
+    "headers" : {
+      "Server" : "Netlify",
+      "Access-Control-Allow-Origin" : "*",
+      "Cache-Status" : "\"Netlify Edge\"; fwd=miss",
+      "Netlify-Vary" : "query",
+      "X-Nf-Request-Id" : "01JBBSAFHKRRVYYMBKQFR8KT93",
+      "Date" : "Tue, 29 Oct 2024 09:22:15 GMT",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Etag" : "W/\"a9f-I68Cx5oSPFclkl+Wy2Fr9jNsFS8\"",
+      "Cache-Control" : "max-age=259200",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "Fri, 01 Nov 2024 09:22:15 GMT",
+      "Age" : "0",
+      "X-Powered-By" : "Express",
+      "Content-Type" : "application/json; charset=utf-8"
+    }
+  },
+  "uuid" : "0c3a3e9a-dff9-4606-a939-33aeeeda94a6",
+  "persistent" : true,
+  "insertionIndex" : 7
+}

@@ -65,8 +65,8 @@ Create the name of the service account to use
 Pod annotations
 */}}
 {{- define "wiremock.podAnnotations" -}}
-checksum/configMappings: {{ include (print $.Template.BasePath "/wiremock/configmap-mappings.yaml") . | sha256sum }}
-checksum/configResponses: {{ include (print $.Template.BasePath "/wiremock/configmap-responses.yaml") . | sha256sum }}
+checksum/configMappings: {{ include (print $.Template.BasePath "/configmap-mappings.yaml") . | sha256sum }}
+checksum/configResponses: {{ include (print $.Template.BasePath "/configmap-responses.yaml") . | sha256sum }}
 {{- if .Values.wiremock_istance_local.podAnnotations }}
 {{ .Values.wiremock_istance_local.podAnnotations }}
 {{- end }}

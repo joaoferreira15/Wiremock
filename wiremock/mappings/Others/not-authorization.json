@@ -1,0 +1,15 @@
+{
+    "priority": 1,
+    "request": {
+      "method": "GET",
+      "urlPathPattern": "/isAuthorized/unauthorizedUser"
+    },
+    "response": {
+      "status": 403,
+      "body": "{ \"isAuthorized\": false }",
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    }
+  }
+  
