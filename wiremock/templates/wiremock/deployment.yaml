@@ -5,8 +5,8 @@ metadata:
   labels:
     {{- include "wiremock.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  {{- if not .Values.wiremock_istance_local.autoscaling.enabled }}
+  replicas: {{ .Values.wiremock_istance_local.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
@@ -18,44 +18,44 @@ spec:
       labels:
         {{- include "wiremock.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets }}
+      {{- with .Values.wiremock_istance_local.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "wiremock.serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.wiremock_istance_local.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- with .Values.env }}
+            {{- toYaml .Values.wiremock_istance_local.securityContext | nindent 12 }}
+          image: "{{ .Values.wiremock_istance_local.image.repository }}:{{ .Values.wiremock_istance_local.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.wiremock_istance_local.image.pullPolicy }}
+          {{- with .Values.wiremock_istance_local.env }}
           env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if .Values.args }}
+          {{- if .Values.wiremock_istance_local.args }}
           args:
-          {{- range .Values.args }}
+          {{- range .Values.wiremock_istance_local.args }}
             - {{ . | quote }}
           {{- end }}
           {{- end }}
           ports:
-            - containerPort: {{ .Values.service.internalPort }}
+            - containerPort: {{ .Values.wiremock_istance_local.service.internalPort }}
               protocol: TCP
           livenessProbe:
             httpGet:
               path: /__admin/health
-              port: {{ .Values.service.internalPort }}
-              scheme: {{ .Values.scheme }}
+              port: {{ .Values.wiremock_istance_local.service.internalPort }}
+              scheme: {{ .Values.wiremock_istance_local.scheme }}
           readinessProbe:
             httpGet:
               path: /__admin/health
-              port: {{ .Values.service.internalPort }}
-              scheme: {{ .Values.scheme }}
+              port: {{ .Values.wiremock_istance_local.service.internalPort }}
+              scheme: {{ .Values.wiremock_istance_local.scheme }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.wiremock_istance_local.resources | nindent 12 }}
           volumeMounts:
             - mountPath: /home/wiremock/storage/mappings
               name: mappings-data
@@ -64,9 +64,9 @@ spec:
       initContainers:
         - name: copy-mappings
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.initContainer.image.repository }}:{{ .Values.initContainer.image.tag }}"
-          imagePullPolicy: {{ .Values.initContainer.image.pullPolicy }}
+            {{- toYaml .Values.wiremock_istance_local.securityContext | nindent 12 }}
+          image: "{{ .Values.wiremock_istance_local.initContainer.image.repository }}:{{ .Values.wiremock_istance_local.initContainer.image.tag }}"
+          imagePullPolicy: {{ .Values.wiremock_istance_local.initContainer.image.pullPolicy }}
           command: ["bash", "-c", "cp  -rf /data/mappings /home/wiremock/storage/mappings"]
           volumeMounts:
             - mountPath: /data/mappings
@@ -75,24 +75,24 @@ spec:
               name: mappings-data
         - name: copy-responses
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.initContainer.image.repository }}:{{ .Values.initContainer.image.tag }}"
-          imagePullPolicy: {{ .Values.initContainer.image.pullPolicy }}
+            {{- toYaml .Values.wiremock_istance_local.securityContext | nindent 12 }}
+          image: "{{ .Values.wiremock_istance_local.initContainer.image.repository }}:{{ .Values.wiremock_istance_local.initContainer.image.tag }}"
+          imagePullPolicy: {{ .Values.wiremock_istance_local.initContainer.image.pullPolicy }}
           command: ["bash", "-c", "cp  -rf /data/responses /home/wiremock/storage/__files"]
           volumeMounts:
             - mountPath: /data/responses
               name: responses-volume
             - mountPath: /home/wiremock/storage/__files
               name: responses-data
-      {{- with .Values.nodeSelector }}
+      {{- with .Values.wiremock_istance_local.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
+      {{- with .Values.wiremock_istance_local.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
+      {{- with .Values.wiremock_istance_local.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
