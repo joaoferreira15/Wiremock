@@ -1,0 +1,46 @@
+{
+  "priority": 1,
+  "request": {
+    "urlPath": "/callback",
+    "method": "POST",
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": {
+          "expression": "$.callbackMethod",
+          "matches": "^.+$"
+        }
+      },
+      {
+        "matchesJsonPath": {
+          "expression": "$.callbackUrl",
+          "matches": "^.+$"
+        }
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "text/plain"
+    },
+    "body": "Data received successfully"
+  },
+  "serveEventListeners": [
+    {
+      "name": "webhook",
+      "parameters": {
+        "method": "{{jsonPath originalRequest.body '$.callbackMethod'}}",
+        "url": "{{jsonPath originalRequest.body '$.callbackUrl'}}",
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": "{\"NomeProprio\":\"João\",\"Apelido\":\"Silva\",\"DataNascimento\":\"1980-01-01\",\"NumeroDocumentoCC\":\"123456789\",\"Fotografia\":\"base64encodedphoto\",\"Nacionalidade\":\"Portuguesa\",\"Sexo\":\"M\",\"FiliacaoPaiNomeProprio\":\"José\",\"FiliacaoPaiApelido\":\"Silva\",\"FiliacaoMaeNomeProprio\":\"Maria\",\"FiliacaoMaeApelido\":\"Silva\",\"CodigoPostal\":\"1000-000\",\"AreaFuncional\":\"Lisboa\",\"EstrangeiroCodigoPostal\":\"12345\",\"CorreioElectronico\":\"joao.silva@example.com\",\"IndicativoPais\":\"+351\",\"Numero\":\"123456789\",\"DataValidadeCC\":\"2025-12-31\"}",
+        "delay": {
+          "type": "uniform",
+          "lower": 5000,
+          "upper": 7000
+        }
+      }
+    }
+  ]
+}

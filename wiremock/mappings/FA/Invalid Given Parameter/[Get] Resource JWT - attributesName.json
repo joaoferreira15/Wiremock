@@ -1,0 +1,27 @@
+{
+  "priority": 2,
+  "request": {
+    "method": "GET",
+    "url": "/OAuthResourceServer/Service/ResourceJWT.svc/resourceJWT",
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": {
+          "expression": "$.attributesName[0]",
+          "doesNotMatch": "^http://interop.gov.pt/MDC/Cidadao/NIC$"
+        }
+      }
+    ],
+    "headers": {
+      "Content-Type": {
+        "equalTo": "application/json"
+      }
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": "{\"Result\": {\"Status\": false, \"Message\": \"attributesName cannot be null or empty.\"}}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

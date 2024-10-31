@@ -1,0 +1,44 @@
+{
+  "id": "011ac4f5-ba24-4cef-8cb9-70eb9994cfd9",
+  "name": "calculator.asmx",
+  "request": {
+    "url": "/calculator.asmx",
+    "method": "POST",
+    "bodyPatterns": [
+      {
+        "equalToXml": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n  <soap:Body>\r\n    <Add xmlns=\"http://tempuri.org/\">\r\n      <intA>5</intA>\r\n      <intB>10</intB>\r\n    </Add>\r\n  </soap:Body>\r\n</soap:Envelope>"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n    <soap:Body>\r\n        <AddResponse xmlns=\"http://tempuri.org/\">\r\n            <AddResult>15</AddResult>\r\n        </AddResponse>\r\n    </soap:Body>\r\n</soap:Envelope>",
+    "headers": {
+      "Server": "Microsoft-IIS/10.0",
+      "Cache-Control": "private, max-age=0",
+      "X-AspNet-Version": "2.0.50727",
+      "Vary": "Accept-Encoding",
+      "X-Powered-By-Plesk": "PleskWin",
+      "Date": "Tue, 15 Oct 2024 19:40:42 GMT",
+      "X-Powered-By": "ASP.NET",
+      "Content-Type": "text/xml; charset=utf-8"
+    }
+  },
+  "serveEventListeners": [
+    {
+      "name": "webhook",
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/reception",
+        "headers": {
+          "Content-Type": "application/json",
+          "X-Type": "webhook"
+        },
+        "body": "{ \"result\": \"SUCCESS\" }"
+      }
+    }
+  ],
+  "uuid": "011ac4f5-ba24-4cef-8cb9-70eb9994cfd9",
+  "persistent": true,
+  "insertionIndex": 11
+}

@@ -1,0 +1,70 @@
+{
+  "priority": 1,
+  "request": {
+    "urlPath": "/callback",
+    "method": "POST",
+    "headers": {
+      "Content-Type": {
+        "equalTo": "text/xml"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "matchesXPath": {
+          "expression": "//*[local-name()='MessageID']/text()",
+          "matches": "^urn:uuid:[0-9]{8}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{12}$"
+        }
+      },
+      {
+        "matchesXPath": {
+          "expression": "//*[local-name()='Action']/text()",
+          "matches": "^(http://|https://).*"
+        }
+      },
+      {
+        "matchesXPath": {
+          "expression": "//*[local-name()='ReplyTo']/*[local-name()='Address']/text()",
+          "matches": "^(http://|https://).*"
+        }
+      },
+      {
+        "matchesXPath": {
+          "expression": "//*[local-name()='To']/text()",
+          "matches": "^(http://|https://).*"
+        }
+      },
+      {
+        "matchesXPath": {
+          "expression": "//*[local-name()='ObtencaoDadosCC']/*[local-name()='NIC']/*[local-name()='Numero']/text()",
+          "matches": "^[0-4][0-9]{8}$"
+        }
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "text/xml"
+    },
+    "body": "<soap:Envelope xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ama='http://www.cartaodecidadao.pt/tipos/ama'><soap:Header><wsa:MessageID>urn:uuid:12345678-1234-1234-1234-123456789012</wsa:MessageID><wsa:RelatesTo>urn:uuid:87654321-4321-4321-4321-210987654321</wsa:RelatesTo><wsa:Action>http://www.cartaodecidadao.pt/tipos/ama#respostaObtencaoDadosCC</wsa:Action><wsa:To>http://example.com/IRNServiceResponse_To</wsa:To></soap:Header><soap:Body><ama:RespostaObtencaoDadosCCResponse><soap:Response>Received</soap:Response></ama:RespostaObtencaoDadosCCResponse></soap:Body></soap:Envelope>"
+  },
+  "serveEventListeners": [
+    {
+      "name": "webhook",
+      "parameters": {
+        "method": "POST",
+        //"url": "{{soapXPath request.body '//*[local-name()=\"ReplyTo\"]/*[local-name()=\"Address\"]/text()'}}",
+        "url": "http://presentation-instance-b-service-local:8082/callback",
+        "headers": {
+          "content-type": "text/xml; charset=utf-8"
+        },
+        "body": "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ama=\"http://www.cartaodecidadao.pt/tipos/ama\"><soap:Header><wsa:MessageID>urn:uuid:12345678-1234-1234-1234-123456789012</wsa:MessageID><wsa:RelatesTo>urn:uuid:87654321-4321-4321-4321-210987654321</wsa:RelatesTo><wsa:Action>http://www.cartaodecidadao.pt/tipos/ama#respostaObtencaoDadosCC</wsa:Action><wsa:To>http://example.com/IRNServiceResponse_To</wsa:To></soap:Header><soap:Body><ama:RespostaObtencaoDadosCCResponse><ama:DetalhesCidadao><ama:Nome><ama:NomeProprio>João</ama:NomeProprio><ama:Apelido>Silva</ama:Apelido></ama:Nome><ama:DataNascimento>1980-01-01</ama:DataNascimento><ama:NumeroDocumentoCC>123456789</ama:NumeroDocumentoCC><ama:Fotografia>base64encodedphoto</ama:Fotografia><ama:Nacionalidade>Portuguesa</ama:Nacionalidade><ama:Sexo>M</ama:Sexo><ama:FiliacaoPai><ama:NomeProprio>José</ama:NomeProprio><ama:Apelido>Silva</ama:Apelido></ama:FiliacaoPai><ama:FiliacaoMae><ama:NomeProprio>Maria</ama:NomeProprio><ama:Apelido>Silva</ama:Apelido></ama:FiliacaoMae></ama:DetalhesCidadao><ama:Morada><ama:Portuguesa><ama:CodigoPostalPortugues><ama:CodigoPostal>1000-000</ama:CodigoPostal><ama:AreaFuncional>Lisboa</ama:AreaFuncional></ama:CodigoPostalPortugues></ama:Portuguesa><ama:Estrangeira><ama:CodigoPostal>12345</ama:CodigoPostal></ama:Estrangeira></ama:Morada><ama:Contactos><ama:CorreioElectronico>joao.silva@example.com</ama:CorreioElectronico><ama:TelefoneMovel><ama:IndicativoPais>+351</ama:IndicativoPais><ama:Numero>123456789</ama:Numero></ama:TelefoneMovel></ama:Contactos><ama:DataValidadeCC>2025-12-31</ama:DataValidadeCC></ama:RespostaObtencaoDadosCCResponse></soap:Body></soap:Envelope>",
+        "delay": {
+          "type": "uniform",
+          "lower": 5000,
+          "upper": 7000
+        }
+      }
+    }
+  ]
+}

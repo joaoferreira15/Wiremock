@@ -1,0 +1,27 @@
+{
+  "priority": 2,
+  "request": {
+    "method": "POST",
+    "url": "/api/1.1/document/pooling",
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": {
+          "expression": "$.front",
+          "doesNotMatch": "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$"
+        }
+      }
+    ],
+    "headers": {
+      "Content-Type": {
+        "equalTo": "application/json"
+      }
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": "{\"status\": false, \"message\": \"front cannot be null or empty\", \"data\": null}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

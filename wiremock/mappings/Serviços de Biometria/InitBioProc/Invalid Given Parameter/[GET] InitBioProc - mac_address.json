@@ -1,0 +1,27 @@
+{
+  "priority": 2,
+  "request": {
+    "method": "GET",
+    "url": "/api/1.1/users/find-by-address",
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": {
+          "expression": "$.mac_address",
+          "doesNotMatch": "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
+        }
+      }
+    ],
+    "headers": {
+      "Content-Type": {
+        "equalTo": "application/json"
+      }
+    }
+  },
+  "response": {
+    "status": 404,
+    "body": "{\"status\": false, \"data\": {\"id\": null, \"message\": \"BAD_REQUEST\"}}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "priority": 3,
+  "request": {
+    "method": "POST",
+    "url": "/api/1.1/document/selfie-compare-base64",
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": {
+          "expression": "$.photo1",
+          "matches": "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$"
+        }
+      },
+      {
+        "matchesJsonPath": {
+          "expression": "$.photo2",
+          "matches": "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$"
+        }
+      },
+      {
+        "matchesJsonPath": {
+          "expression": "$.photo",
+          "matches": "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$"
+        }
+      },
+      {
+        "matchesJsonPath": {
+          "expression": "$.facemap",
+          "matches": "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$"
+        }
+      },
+      {
+        "matchesJsonPath": {
+          "expression": "$.livenessId",
+          "matches": "^(0[1-9]|[1-9][0-9])$"
+        }
+      }
+    ],
+    "headers": {
+      "Content-Type": {
+        "equalTo": "application/json"
+      }
+    }
+  },
+  "response": {
+    "transformers": ["response-template"],
+    "status": 200,
+    "body": "{\"status\": true, \"code\": \"200\", \"message\": \"Selfie comparison successful\", \"data\": {\"message\": \"FACE_COMPARED_WITH_SUCCESS\", \"verified\": true, \"confidence\": {{randomDecimal lower=0.500 upper=0.999}} }}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
