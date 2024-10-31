@@ -1,53 +1,53 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: {{ .Values.mysql-instance-local.deployment.name }}
+    name: {{ .Values.mysql_instance_local.deployment.name }}
     labels:
-        app: {{ .Values.mysql-instance-local.deployment.name }}
+        app: {{ .Values.mysql_instance_local.deployment.name }}
 spec:
-    replicas: {{ .Values.mysql-instance-local.replicaCount }}
+    replicas: {{ .Values.mysql_instance_local.replicaCount }}
     selector:
         matchLabels:
-            app: {{ .Values.mysql-instance-local.deployment.name }}
+            app: {{ .Values.mysql_instance_local.deployment.name }}
     strategy:
         type: RollingUpdate
     template:
         metadata:
             labels:
-                app: {{ .Values.mysql-instance-local.deployment.name }}
+                app: {{ .Values.mysql_instance_local.deployment.name }}
         spec:
-            {{- if .Values.mysql-instance-local.imagePullSecrets.enabled }}
+            {{- if .Values.mysql_instance_local.imagePullSecrets.enabled }}
             imagePullSecrets:
-                - name: {{ .Values.mysql-instance-local.imagePullSecrets.name }}
+                - name: {{ .Values.mysql_instance_local.imagePullSecrets.name }}
             {{- end }}
             containers:
-                - name: {{ .Values.mysql-instance-local.deployment.container.name }}
-                  image: "{{ .Values.mysql-instance-local.image.repository }}:{{ .Values.mysql-instance-local.image.tag }}"
-                  imagePullPolicy: {{ .Values.mysql-instance-local.image.pullPolicy }}
+                - name: {{ .Values.mysql_instance_local.deployment.container.name }}
+                  image: "{{ .Values.mysql_instance_local.image.repository }}:{{ .Values.mysql_instance_local.image.tag }}"
+                  imagePullPolicy: {{ .Values.mysql_instance_local.image.pullPolicy }}
                   ports:
-                      - containerPort: {{ .Values.mysql-instance-local.deployment.container.port }}
+                      - containerPort: {{ .Values.mysql_instance_local.deployment.container.port }}
                   env:
                       - name: JAVA_HOME
                         valueFrom:
                         configMapKeyRef:
-                            name: {{ .Values.mysql-instance-local.configMap.name }}
+                            name: {{ .Values.mysql_instance_local.configMap.name }}
                             key: JAVA_HOME
                   livenessProbe:
                       httpGet:
                           path: /actuator/health/liveness
-                          port: {{ .Values.mysql-instance-local.deployment.container.port }}
-                      initialDelaySeconds: {{ .Values.mysql-instance-local.probes.liveness.initialDelaySeconds }}
-                      periodSeconds:  {{ .Values.mysql-instance-local.probes.liveness.periodSeconds }}
+                          port: {{ .Values.mysql_instance_local.deployment.container.port }}
+                      initialDelaySeconds: {{ .Values.mysql_instance_local.probes.liveness.initialDelaySeconds }}
+                      periodSeconds:  {{ .Values.mysql_instance_local.probes.liveness.periodSeconds }}
                   readinessProbe:
                       httpGet:
                           path: /actuator/health/readiness
-                          port: {{ .Values.mysql-instance-local.deployment.container.port }}
-                      initialDelaySeconds: {{ .Values.mysql-instance-local.probes.liveness.initialDelaySeconds }}
-                      periodSeconds:  {{ .Values.mysql-instance-local.probes.liveness.periodSeconds }}
+                          port: {{ .Values.mysql_instance_local.deployment.container.port }}
+                      initialDelaySeconds: {{ .Values.mysql_instance_local.probes.liveness.initialDelaySeconds }}
+                      periodSeconds:  {{ .Values.mysql_instance_local.probes.liveness.periodSeconds }}
                   resources:
                       limits:
-                          cpu: {{ .Values.mysql-instance-local.resources.limits.cpu }}
-                          memory: {{ .Values.mysql-instance-local.resources.limits.memory }}
+                          cpu: {{ .Values.mysql_instance_local.resources.limits.cpu }}
+                          memory: {{ .Values.mysql_instance_local.resources.limits.memory }}
                       requests:
-                          cpu: {{ .Values.mysql-instance-local.resources.requests.cpu }}
-                          memory: {{ .Values.mysql-instance-local.resources.requests.memory}}
+                          cpu: {{ .Values.mysql_instance_local.resources.requests.cpu }}
+                          memory: {{ .Values.mysql_instance_local.resources.requests.memory}}

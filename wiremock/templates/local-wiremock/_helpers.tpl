@@ -2,7 +2,7 @@
 Expand the name of the chart.
 */}}
 {{- define "wiremock.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- default .Chart.Name .Values.wiremock_istance_local.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
@@ -11,10 +11,10 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 If release name contains chart name it will be used as a full name.
 */}}
 {{- define "wiremock.fullname" -}}
-{{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- if .Values.wiremock_istance_local.fullnameOverride }}
+{{- .Values.wiremock_istance_local.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- $name := default .Chart.Name .Values.wiremock_istance_local.nameOverride }}
 {{- if contains $name .Release.Name }}
 {{- .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -54,10 +54,10 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Create the name of the service account to use
 */}}
 {{- define "wiremock.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "wiremock.fullname" .) .Values.serviceAccount.name }}
+{{- if .Values.wiremock_istance_local.serviceAccount.create }}
+{{- default (include "wiremock.fullname" .) .Values.wiremock_istance_local.serviceAccount.name }}
 {{- else }}
-{{- default "default" .Values.serviceAccount.name }}
+{{- default "default" .Values.wiremock_istance_local.serviceAccount.name }}
 {{- end }}
 {{- end }}
 
@@ -67,8 +67,8 @@ Pod annotations
 {{- define "wiremock.podAnnotations" -}}
 checksum/configMappings: {{ include (print $.Template.BasePath "/configmap-mappings.yaml") . | sha256sum }}
 checksum/configResponses: {{ include (print $.Template.BasePath "/configmap-responses.yaml") . | sha256sum }}
-{{- if .Values.podAnnotations }}
-{{ .Values.podAnnotations }}
+{{- if .Values.wiremock_istance_local.podAnnotations }}
+{{ .Values.wiremock_istance_local.podAnnotations }}
 {{- end }}
 {{- end }}
 

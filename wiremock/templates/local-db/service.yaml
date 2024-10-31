@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.mysql-instance-local.service.name }}
+  name: {{ .Values.mysql_instance_local.service.name }}
   labels:
-    app: {{ .Values.mysql-instance-local.service.name }}
+    app: {{ .Values.mysql_instance_local.service.name }}
 spec:
-  type: {{ .Values.mysql-instance-local.service.type }}
+  type: {{ .Values.mysql_instance_local.service.type }}
   ports:
-    - port: {{ .Values.mysql-instance-local.service.ports.port }}
-      targetPort: {{ .Values.mysql-instance-local.service.ports.targetPort }}
+    - port: {{ .Values.mysql_instance_local.service.ports.port }}
+      targetPort: {{ .Values.mysql_instance_local.service.ports.targetPort }}
   selector:
-    app: {{ .Values.mysql-instance-local.deployment.name }}
+    app: {{ .Values.mysql_instance_local.deployment.name }}

@@ -1,5 +1,5 @@
 #spring-instance-local
-spring-instance-local:
+spring_instance_local:
   image:
     repository: joaoferreira17/springboot-instance-image:1.0.0
     tag: firstTry
@@ -43,7 +43,7 @@ spring-instance-local:
 
 
 # mysql-instance-local
-mysql-instance-local:
+mysql_instance_local:
   image:
     repository: joaoferreira17/my-sql-instance-image:1.0.0
     tag: firstTry
@@ -106,7 +106,7 @@ mysql-instance-local:
 
 
 # wiremock-istance-local
-wiremock-istance-local:
+wiremock_istance_local:
   mappings: {}
   #  custom_mapping.json: |
   #    {
