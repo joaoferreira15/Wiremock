@@ -1,0 +1,33 @@
+{
+  "priority": 3,
+  "request": {
+    "method": "GET",
+    "url": "/OAuthResourceServer/Service/ResourceJWT.svc/resourceJWT",
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": {
+          "expression": "$.token",
+          "matches": "^.+$"
+        }
+      },
+      {
+        "matchesJsonPath": {
+          "expression": "$.attributesName[0]",
+          "matches": "^http://interop.gov.pt/MDC/Cidadao/NIC$"
+        }
+      }
+    ],
+    "headers": {
+      "Content-Type": {
+        "equalTo": "application/json"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"Result\": {\"Status\": true, \"Message\": \"Operation successful\"}, \"JsonWebToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

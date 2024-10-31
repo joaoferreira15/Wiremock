@@ -1,0 +1,46 @@
+{
+  "priority": 2,
+  "request": {
+    "method": "POST",
+    "url": "/liveness-check/api/1.1/verify",
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": {
+          "expression": "$.sessionId",
+          "matches": "^(0[1-9]|[1-9][0-9])$"
+        }
+      },
+      {
+        "matchesJsonPath": {
+          "expression": "$.facemap",
+          "matches": "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$"
+        }
+      },
+      {
+        "matchesJsonPath": {
+          "expression": "$.auditTrailImage",
+          "matches": "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$"
+        }
+      },
+      {
+        "matchesJsonPath": {
+          "expression": "$.processId",
+          "matches": "^(0[1-9]|[1-9][0-9])$"
+        }
+      }
+    ],
+    "headers": {
+      "Content-Type": {
+        "equalTo": "application/json"
+      }
+    }
+  },
+  "response": {
+    "transformers": ["response-template"],
+    "status": 200,
+    "body": "{\"status\": true, \"data\": {\"livenessId\": {{randomInt lower=1 upper=99}}, \"livenessResult\": {\"data\": {\"faceScanSecurityChecks\": {\"sessionTokenCheckSucceeded\": true, \"auditTrailVerificationCheckSucceeded\": true, \"faceScanLivenessCheckSucceeded\": true}, \"livenessStatus\": 0, \"scanResultBlob\": 'base64EncodedScanResultBlob', \"ageEstimateGroupEnumInt\": 2, \"faceMap\": {{jsonPath request.body '$.facemap'}}}, \"meta\": {\"message\": \"LIVENESS_VALIDATION_PASSED\", \"performance\": {\"m\": 522}}}}}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

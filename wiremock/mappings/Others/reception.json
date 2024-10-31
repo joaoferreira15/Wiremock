@@ -1,0 +1,18 @@
+{
+  "request": {
+    "urlPath": "/reception",
+    "method": "POST",
+    "headers": {
+      "X-Type": {
+        "equalTo": "webhook"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{ \"message\": \"webhook received\" }"
+  }
+}

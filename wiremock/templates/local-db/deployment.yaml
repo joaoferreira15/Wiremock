@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: {{ .Values.mysql-instance-local.deployment.name }}
+    labels:
+        app: {{ .Values.mysql-instance-local.deployment.name }}
+spec:
+    replicas: {{ .Values.mysql-instance-local.replicaCount }}
+    selector:
+        matchLabels:
+            app: {{ .Values.mysql-instance-local.deployment.name }}
+    strategy:
+        type: RollingUpdate
+    template:
+        metadata:
+            labels:
+                app: {{ .Values.mysql-instance-local.deployment.name }}
+        spec:
+            {{- if .Values.mysql-instance-local.imagePullSecrets.enabled }}
+            imagePullSecrets:
+                - name: {{ .Values.mysql-instance-local.imagePullSecrets.name }}
+            {{- end }}
+            containers:
+                - name: {{ .Values.mysql-instance-local.deployment.container.name }}
+                  image: "{{ .Values.mysql-instance-local.image.repository }}:{{ .Values.mysql-instance-local.image.tag }}"
+                  imagePullPolicy: {{ .Values.mysql-instance-local.image.pullPolicy }}
+                  ports:
+                      - containerPort: {{ .Values.mysql-instance-local.deployment.container.port }}
+                  env:
+                      - name: JAVA_HOME
+                        valueFrom:
+                        configMapKeyRef:
+                            name: {{ .Values.mysql-instance-local.configMap.name }}
+                            key: JAVA_HOME
+                  livenessProbe:
+                      httpGet:
+                          path: /actuator/health/liveness
+                          port: {{ .Values.mysql-instance-local.deployment.container.port }}
+                      initialDelaySeconds: {{ .Values.mysql-instance-local.probes.liveness.initialDelaySeconds }}
+                      periodSeconds:  {{ .Values.mysql-instance-local.probes.liveness.periodSeconds }}
+                  readinessProbe:
+                      httpGet:
+                          path: /actuator/health/readiness
+                          port: {{ .Values.mysql-instance-local.deployment.container.port }}
+                      initialDelaySeconds: {{ .Values.mysql-instance-local.probes.liveness.initialDelaySeconds }}
+                      periodSeconds:  {{ .Values.mysql-instance-local.probes.liveness.periodSeconds }}
+                  resources:
+                      limits:
+                          cpu: {{ .Values.mysql-instance-local.resources.limits.cpu }}
+                          memory: {{ .Values.mysql-instance-local.resources.limits.memory }}
+                      requests:
+                          cpu: {{ .Values.mysql-instance-local.resources.requests.cpu }}
+                          memory: {{ .Values.mysql-instance-local.resources.requests.memory}}

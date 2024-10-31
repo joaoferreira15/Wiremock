@@ -1,130 +1,235 @@
-# Default values for WireMock.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-mappings: {}
-#  custom_mapping.json: |
-#    {
-#      "request": {
-#        "method": "POST",
-#        "url": "/v1/custom-mapping"
-#      },
-#      "response":{
-#        "status":200,
-#        "bodyFileName":"responses/custom_response.json",
-#        "headers":{
-#          "Content-Type":"application/json"
-#        }
-#      }
-#    }
-
-responses: {}
-#  custom_response.json: |
-#    {
-#      "message": "Here is my custom response!"
-#    }
-
-replicaCount: 1
-
-image:
-  repository: wiremock/wiremock
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: 3.8.0
-  pullPolicy: IfNotPresent
-
-initContainer:
+#spring-instance-local
+spring-instance-local:
   image:
-    repository: bash
-    tag: 5
-    pullPolicy: Always
+    repository: joaoferreira17/springboot-instance-image:1.0.0
+    tag: firstTry
+    pullPolicy: IfNotPresent
+  imagePullSecrets:
+    enabled: false
+  configMap:
+    name: spring-instance-configmap-local
+  deployment:
+    name: spring-instance-deployment-local
+    container:
+      name: spring-instance-local
+      port: 8081
+  service:
+    name: spring-instance-service-local
+    type: LoadBalancer
+    ports:
+      port: 8081
+      targetPort: 8081
+  probes:
+    liveness:
+      initialDelaySeconds: 100
+      periodSeconds: 10
+    readiness:
+      initialDelaySeconds: 100
+      periodSeconds: 10
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "500m"
+  ingress:
+    name: spring-instance-ingress-local
+    enabled: true
+    host: "spring-instance.minikube.local"
+    tls:
+      enabled: false 
 
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
 
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
 
-podAnnotations: {}
+# mysql-instance-local
+mysql-instance-local:
+  image:
+    repository: joaoferreira17/my-sql-instance-image:1.0.0
+    tag: firstTry
+    pullPolicy: IfNotPresent
+  imagePullSecrets:
+    enabled: false
+  configMap:
+    name: mysql-configmap-local
+  deployment:
+    name: mysql-deployment-local
+    container:
+      name: mysql-instance-local
+      port: 3306
+  service:
+    name: mysql-service-local
+    type: ClusterIP
+    ports:
+      port: 3306
+      targetPort: 3306
+  probes:
+    liveness:
+      # MySQL's startup time
+      initialDelaySeconds: 60
+      periodSeconds: 30
+      timeoutSeconds: 5
+      failureThreshold: 3
+      successThreshold: 1
+      exec:
+        command:
+          - mysqladmin
+          - ping
+          - "-h"
+          - "127.0.0.1"
+    readiness:
+      initialDelaySeconds: 60
+      periodSeconds: 30
+      timeoutSeconds: 5
+      failureThreshold: 3
+      successThreshold: 1
+      exec:
+        command:
+          - mysqladmin
+          - ping
+          - "-h"
+          - "127.0.0.1"
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "500m"
+  ingress:
+    enabled: false
+  persistence:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 8Gi
+    annotations: {}
 
-podSecurityContext: {}
-  # fsGroupChangePolicy: Always
-  # sysctls: []
-  # supplementalGroups: []
-  # fsGroup: 2000
 
-securityContext: {}
-  # seLinuxOptions: {}
-  # runAsUser: 1000
-  # runAsGroup: 2000
-  # runAsNonRoot: true
-  # privileged: false
-  # readOnlyRootFilesystem: true
-  # allowPrivilegeEscalation: false
-  # capabilities:
-  #   drop: ["ALL"]
-  # seccompProfile:
-  #   type: "RuntimeDefault"
+# wiremock-istance-local
+wiremock-istance-local:
+  mappings: {}
+  #  custom_mapping.json: |
+  #    {
+  #      "request": {
+  #        "method": "POST",
+  #        "url": "/v1/custom-mapping"
+  #      },
+  #      "response":{
+  #        "status":200,
+  #        "bodyFileName":"responses/custom_response.json",
+  #        "headers":{
+  #          "Content-Type":"application/json"
+  #        }
+  #      }
+  #    }
 
-service:
-  type: ClusterIP
-  externalPort: 9021
-  internalPort: 9021
+  responses: {}
+  #  custom_response.json: |
+  #    {
+  #      "message": "Here is my custom response!"
+  #    }
 
-ingress:
-  enabled: true
-  className: ""
-  annotations: {}
-  name: wiremock-ingress-local
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: wirmeock.minikube.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+  replicaCount: 1
 
-env: {}
+  image:
+    repository: wiremock/wiremock
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: 3.8.0
+    pullPolicy: IfNotPresent
 
-args:
-  - "--port=9021"
-  - "--max-request-journal=1000"
-  - "--local-response-templating"
-  - "--root-dir=/home/wiremock/storage"
+  initContainer:
+    image:
+      repository: bash
+      tag: 5
+      pullPolicy: Always
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+  imagePullSecrets: []
+  nameOverride: ""
+  fullnameOverride: ""
 
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
 
-nodeSelector: {}
+  podAnnotations: {}
 
-tolerations: []
+  podSecurityContext: {}
+    # fsGroupChangePolicy: Always
+    # sysctls: []
+    # supplementalGroups: []
+    # fsGroup: 2000
 
-affinity: {}
+  securityContext: {}
+    # seLinuxOptions: {}
+    # runAsUser: 1000
+    # runAsGroup: 2000
+    # runAsNonRoot: true
+    # privileged: false
+    # readOnlyRootFilesystem: true
+    # allowPrivilegeEscalation: false
+    # capabilities:
+    #   drop: ["ALL"]
+    # seccompProfile:
+    #   type: "RuntimeDefault"
 
-scheme: "HTTP"
+  service:
+    type: ClusterIP
+    externalPort: 9021
+    internalPort: 9021
+
+  ingress:
+    enabled: true
+    className: ""
+    annotations: {}
+    name: wiremock-ingress-local
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+    hosts:
+      - host: wirmeock.minikube.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+  env: {}
+
+  args:
+    - "--port=9021"
+    - "--max-request-journal=1000"
+    - "--local-response-templating"
+    - "--root-dir=/home/wiremock/storage"
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  scheme: "HTTP"

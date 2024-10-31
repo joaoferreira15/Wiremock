@@ -1,0 +1,18 @@
+{
+  "request": {
+    "urlPath": "/reception",
+    "method": "POST",
+    "headers": {
+      "X-Type": {
+        "equalTo": "callback"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{ \"message\": \"callback received\" }"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "priority": 2,
+  "request": {
+    "method": "POST",
+    "url": "/IRNService",
+    "headers": {
+      "Content-Type": {
+        "equalTo": "text/xml"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "matchesXPath": {
+          "expression": "//*[local-name()='To']/text()",
+          "doesNotMatch": "^(http://|https://).*"
+        }
+      }
+    ]
+  },
+  "response": {
+    "status": 400,
+    "body": "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ama=\"http://www.cartaodecidadao.pt/tipos/ama\"><soapenv:Header/><soap:Body><ama:RespostaObtencaoDadosCCResponse><ns:Status>false</ns:Status><ns:Message>To cannot be null or empty</ns:Message><ns:SentCount>0</ns:SentCount><ns:FailedCount>1</ns:FailedCount></ama:RespostaObtencaoDadosCCResponse></soap:Body></soap:Envelope>",
+    "headers": {
+      "Content-Type": "text/xml; charset=utf-8"
+    }
+  }
+}
