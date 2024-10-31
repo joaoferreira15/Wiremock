@@ -5,10 +5,10 @@ metadata:
   labels:
     {{- include "wiremock.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.wiremock_istance_local.service.type }}
+  type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.wiremock_istance_local.service.externalPort }}
-      targetPort: {{ .Values.wiremock_istance_local.service.internalPort }}
+    - port: {{ .Values.service.externalPort }}
+      targetPort: {{ .Values.service.internalPort }}
       protocol: TCP
       name: {{ include "wiremock.fullname" . }}
   selector:
