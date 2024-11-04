@@ -96,14 +96,12 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      volumes:
-        - name: mappings-data
-          emptyDir: {}
-        - name: responses-data
-          emptyDir: {}
-        - name: mappings-volume
-          configMap:
-            name: {{ include "wiremock.fullname" . }}-mappings-configs
-        - name: responses-volume
-          configMap:
-            name: {{ include "wiremock.fullname" . }}-responses-configs
+volumes:
+  - name: mappings-data
+    hostPath:
+      path: "/mnt/c/Users/joao.a.ferreira/OneDrive - ANF - Associação Nacional das Farmácias/Desktop/Tarefas/Repos/mappings"
+      type: Directory
+  - name: responses-volume
+    hostPath:
+      path: "/mnt/c/Users/joao.a.ferreira/OneDrive - ANF - Associação Nacional das Farmácias/Desktop/Tarefas/Repos/responses"
+      type: Directory
