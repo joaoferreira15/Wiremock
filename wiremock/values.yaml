@@ -178,6 +178,7 @@ wiremock_instance_local:
     #   type: "RuntimeDefault"
 
   service:
+    name: wiremock-instance-service-local
     type: ClusterIP
     externalPort: 9021
     internalPort: 9021
