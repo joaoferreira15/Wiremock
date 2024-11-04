@@ -32,18 +32,6 @@ spec:
                         configMapKeyRef:
                             name: {{ .Values.spring_instance_local.configMap.name }}
                             key: JAVA_HOME
-                  livenessProbe:
-                      httpGet:
-                          path: /actuator/health/liveness
-                          port: {{ .Values.spring_instance_local.deployment.container.port }}
-                      initialDelaySeconds: {{ .Values.spring_instance_local.probes.liveness.initialDelaySeconds }}
-                      periodSeconds:  {{ .Values.spring_instance_local.probes.liveness.periodSeconds }}
-                  readinessProbe:
-                      httpGet:
-                          path: /actuator/health/readiness
-                          port: {{ .Values.spring_instance_local.deployment.container.port }}
-                      initialDelaySeconds: {{ .Values.spring_instance_local.probes.liveness.initialDelaySeconds }}
-                      periodSeconds:  {{ .Values.spring_instance_local.probes.liveness.periodSeconds }}
                   resources:
                       limits:
                           cpu: {{ .Values.spring_instance_local.resources.limits.cpu }}
