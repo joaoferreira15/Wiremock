@@ -50,12 +50,3 @@ spec:
           requests:
             cpu: {{ .Values.wiremock_instance_local.resources.requests.cpu }}
             memory: {{ .Values.wiremock_instance_local.resources.requests.memory }}
-      volumes:
-      - name: mappings-data
-        hostPath:
-          path: 'C:\Users\joao.a.ferreira\OneDrive - ANF - Associação Nacional das Farmácias\Desktop\Tarefas\Repos\mappings'
-          type: Directory
-      - name: responses-data
-        hostPath:
-          path: '/mnt/c/Users/joao.a.ferreira/OneDrive - ANF - Associação Nacional das Farmácias/Desktop/Tarefas/Repos/responses'
-          type: Directory
