@@ -184,7 +184,7 @@ wiremock_istance_local:
     internalPort: 8080
 
   ingress:
-    enabled: false
+    enabled: true
     className: ""
     annotations: {}
       # kubernetes.io/ingress.class: nginx
