@@ -7,8 +7,8 @@ metadata:
 data:
   {{- $files := .Files }}
   {{- range $key, $value := .Files }}
-  {{- if hasPrefix $key "mappings/" }} {{/* only when in mappings/ */}}
-  {{ $key | trimPrefix "mappings/" | replace "/" "_" }}: {{ $files.Get $key | quote }} {{/* adapt $key as desired */}}
+  {{- if hasPrefix "mappings/" $key }} {{/* only when in mappings/ */}}
+  {{ $key | trimPrefix "mappings/" }}: {{ $files.Get $key | quote }} {{/* adapt $key as desired */}}
   {{- end }}
   {{- end }}
   {{- with .Values.wiremock_istance_local.mappings }}

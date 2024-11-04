@@ -7,8 +7,8 @@ metadata:
 data:
   {{- $files := .Files }}
   {{- range $key, $value := .Files }}
-  {{- if hasPrefix $key "responses/" }} {{/* only when in responses/ */}}
-  {{ $key | trimPrefix "responses/" | replace "/" "_" }}: {{ $files.Get $key | quote }} {{/* adapt $key as desired */}}
+  {{- if hasPrefix "responses/" $key }} {{/* only when in responses/ */}}
+  {{ $key | trimPrefix "responses/" }}: {{ $files.Get $key | quote }} {{/* adapt $key as desired */}}
   {{- end }}
   {{- end }}
   {{- with .Values.wiremock_istance_local.responses }}
