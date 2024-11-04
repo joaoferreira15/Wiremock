@@ -16,6 +16,15 @@ spec:
       labels:
         app: {{ .Values.wiremock_instance_local.deployment.name }}
     spec:
+      initContainers:
+      - name: git-clone
+        image: alpine/git
+        command: ['sh', '-c', 'git clone https://github.com/joaoferreira15/Wiremock.git /storage']
+        volumeMounts:
+        - name: mappings-data
+          mountPath: /storage/wiremock/mappings
+        - name: responses-data
+          mountPath: /storage/wiremock/responses
       containers:
       - name: {{ .Values.wiremock_instance_local.deployment.container.name }}
         image: "{{ .Values.wiremock_instance_local.image.repository }}:{{ .Values.wiremock_instance_local.image.tag }}"
