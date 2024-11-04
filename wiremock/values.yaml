@@ -3,7 +3,7 @@ spring_instance_local:
   image:
     repository: joaoferreira17/springboot-instance-image
     tag: 1.0.0
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   imagePullSecrets:
     enabled: false
   configMap:
