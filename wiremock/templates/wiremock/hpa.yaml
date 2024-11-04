@@ -1,0 +1,28 @@
+{{- if .Values.wiremock_instance_local.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "wiremock.fullname" . }}
+  labels:
+    {{- include "wiremock.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "wiremock.fullname" . }}
+  minReplicas: {{ .Values.wiremock_instance_local.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.wiremock_instance_local.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.wiremock_instance_local.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.wiremock_instance_local.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.wiremock_instance_local.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.wiremock_instance_local.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}

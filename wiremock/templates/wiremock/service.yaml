@@ -1,13 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.wiremock_instance_local.service.name }}
+  name: {{ include "wiremock.fullname" . }}
   labels:
-    app: {{ .Values.wiremock_instance_local.service.name }}
+    {{- include "wiremock.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.wiremock_instance_local.service.type }}
   ports:
-    - port: {{ .Values.wiremock_instance_local.service.ports.port }}
-      targetPort: {{ .Values.wiremock_instance_local.service.ports.targetPort }}
+    - port: {{ .Values.wiremock_instance_local.service.externalPort }}
+      targetPort: {{ .Values.wiremock_instance_local.service.internalPort }}
+      protocol: TCP
+      name: {{ include "wiremock.fullname" . }}
   selector:
-    app: {{ .Values.wiremock_instance_local.deployment.name }}
+    {{- include "wiremock.selectorLabels" . | nindent 4 }}
