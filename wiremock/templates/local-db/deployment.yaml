@@ -26,24 +26,26 @@ spec:
                   imagePullPolicy: {{ .Values.mysql_instance_local.image.pullPolicy }}
                   ports:
                       - containerPort: {{ .Values.mysql_instance_local.deployment.container.port }}
-                  env:
-                      - name: JAVA_HOME
-                        valueFrom:
-                        configMapKeyRef:
-                            name: {{ .Values.mysql_instance_local.configMap.name }}
-                            key: JAVA_HOME
                   livenessProbe:
-                      httpGet:
-                          path: /actuator/health/liveness
-                          port: {{ .Values.mysql_instance_local.deployment.container.port }}
+                      exec:
+                          command:
+                          - mysqladmin
+                          - ping
+                          - "-h"
+                          - "127.0.0.1"
+                          - "--silent"
                       initialDelaySeconds: {{ .Values.mysql_instance_local.probes.liveness.initialDelaySeconds }}
-                      periodSeconds:  {{ .Values.mysql_instance_local.probes.liveness.periodSeconds }}
+                      periodSeconds: {{ .Values.mysql_instance_local.probes.liveness.periodSeconds }}
                   readinessProbe:
-                      httpGet:
-                          path: /actuator/health/readiness
-                          port: {{ .Values.mysql_instance_local.deployment.container.port }}
-                      initialDelaySeconds: {{ .Values.mysql_instance_local.probes.liveness.initialDelaySeconds }}
-                      periodSeconds:  {{ .Values.mysql_instance_local.probes.liveness.periodSeconds }}
+                      exec:
+                          command:
+                          - mysqladmin
+                          - ping
+                          - "-h"
+                          - "127.0.0.1"
+                          - "--silent"
+                      initialDelaySeconds: {{ .Values.mysql_instance_local.probes.readiness.initialDelaySeconds }}
+                      periodSeconds: {{ .Values.mysql_instance_local.probes.readiness.periodSeconds }}
                   resources:
                       limits:
                           cpu: {{ .Values.mysql_instance_local.resources.limits.cpu }}
