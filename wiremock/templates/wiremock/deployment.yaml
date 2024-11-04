@@ -31,9 +31,9 @@ spec:
         livenessProbe:
           httpGet:
               path: /__admin/health
-              port: {{ .Values.deployment.container.port }}
-          initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
-          periodSeconds:  {{ .Values.probes.liveness.periodSeconds }}
+              port: {{ .Values.wiremock_instance_local.deployment.container.port }}
+          initialDelaySeconds: {{ .Values.wiremock_instance_local.probes.liveness.initialDelaySeconds }}
+          periodSeconds:  {{ .Values.wiremock_instance_local.probes.liveness.periodSeconds }}
         resources:
           limits:
             cpu: {{ .Values.wiremock_instance_local.resources.limits.cpu }}
