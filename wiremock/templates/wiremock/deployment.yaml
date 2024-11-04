@@ -44,7 +44,7 @@ spec:
       volumes:
       - name: mappings-data
         hostPath:
-          path: '/mnt/c/Users/joao.a.ferreira/OneDrive - ANF - Associação Nacional das Farmácias/Desktop/Tarefas/Repos/responses'
+          path: 'C:\Users\joao.a.ferreira\OneDrive - ANF - Associação Nacional das Farmácias\Desktop\Tarefas\Repos\mappings'
           type: Directory
       - name: responses-data
         hostPath:
