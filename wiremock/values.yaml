@@ -185,10 +185,10 @@ wiremock_instance_local:
 
   probes:
     liveness:
-      initialDelaySeconds: 10
+      initialDelaySeconds: 1
       periodSeconds: 10
     readiness:
-      initialDelaySeconds: 10
+      initialDelaySeconds: 1
       periodSeconds: 10
 
   ingress:

@@ -49,11 +49,15 @@ spec:
               path: /__admin/health
               port: {{ .Values.wiremock_instance_local.service.internalPort }}
               scheme: {{ .Values.wiremock_instance_local.scheme }}
+            initialDelaySeconds: {{ .Values.wiremock_instance_local.probes.liveness.initialDelaySeconds }}
+            periodSeconds:  {{ .Values.wiremock_instance_local.probes.liveness.periodSeconds }}
           readinessProbe:
             httpGet:
               path: /__admin/mappings
               port: {{ .Values.wiremock_instance_local.service.internalPort }}
               scheme: {{ .Values.wiremock_instance_local.scheme }}
+            initialDelaySeconds: {{ .Values.wiremock_instance_local.probes.liveness.initialDelaySeconds }}
+            periodSeconds:  {{ .Values.wiremock_instance_local.probes.liveness.periodSeconds }}
           resources:
             {{- toYaml .Values.wiremock_instance_local.resources | nindent 12 }}
           volumeMounts:
