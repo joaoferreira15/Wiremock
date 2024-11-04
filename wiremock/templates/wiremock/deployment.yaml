@@ -19,7 +19,7 @@ spec:
       initContainers:
       - name: git-clone
         image: alpine/git
-        command: ['sh', '-c', 'rm -rf /storage/wiremock && git clone https://github.com/joaoferreira15/Wiremock.git /storage && cp -r /storage/wiremock/mappings/* /storage/mappings/ && cp -r /storage/wiremock/responses/* /storage/responses/']
+        command: ['sh', '-c', 'rm -rf /storage && mkdir -p /storage && git clone https://github.com/joaoferreira15/Wiremock.git /storage && cp -r /storage/wiremock/mappings/* /storage/mappings/ && cp -r /storage/wiremock/responses/* /storage/responses/']
         volumeMounts:
         - name: mappings-data
           mountPath: /storage/mappings
