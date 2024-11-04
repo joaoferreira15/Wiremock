@@ -50,3 +50,8 @@ spec:
           requests:
             cpu: {{ .Values.wiremock_instance_local.resources.requests.cpu }}
             memory: {{ .Values.wiremock_instance_local.resources.requests.memory }}
+      volumes:
+      - name: mappings-data
+        emptyDir: {}
+      - name: responses-data
+        emptyDir: {}
