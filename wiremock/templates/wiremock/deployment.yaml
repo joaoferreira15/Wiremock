@@ -19,12 +19,12 @@ spec:
       initContainers:
       - name: git-clone
         image: alpine/git
-        command: ['sh', '-c', 'rm -rf /storage/wiremock && git clone https://github.com/joaoferreira15/Wiremock.git /storage']
+        command: ['sh', '-c', 'rm -rf /storage/wiremock && git clone https://github.com/joaoferreira15/Wiremock.git /storage && cp -r /storage/wiremock/mappings/* /storage/mappings/ && cp -r /storage/wiremock/responses/* /storage/responses/']
         volumeMounts:
         - name: mappings-data
-          mountPath: /storage/wiremock/mappings
+          mountPath: /storage/mappings
         - name: responses-data
-          mountPath: /storage/wiremock/responses
+          mountPath: /storage/responses
       containers:
       - name: {{ .Values.wiremock_instance_local.deployment.container.name }}
         image: "{{ .Values.wiremock_instance_local.image.repository }}:{{ .Values.wiremock_instance_local.image.tag }}"
