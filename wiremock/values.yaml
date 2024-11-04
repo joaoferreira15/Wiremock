@@ -178,10 +178,9 @@ wiremock_instance_local:
     #   type: "RuntimeDefault"
 
   service:
-    name: wiremock-instance-local
     type: ClusterIP
-    externalPort: 8080
-    internalPort: 8080
+    externalPort: 9021
+    internalPort: 9021
 
   ingress:
     enabled: false
@@ -202,7 +201,7 @@ wiremock_instance_local:
   env: {}
 
   args:
-    - "--port=8080"
+    - "--port=9021"
     - "--max-request-journal=1000"
     - "--local-response-templating"
     - "--root-dir=/home/wiremock/storage"
