@@ -1,61 +1,32 @@
-{{- if .Values.wiremock_istance_local.ingress.enabled -}}
-{{- $fullName := include "wiremock.fullname" . -}}
-{{- $svcPort := .Values.wiremock_istance_local.service.externalPort -}}
-{{- if and .Values.wiremock_istance_local.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
-  {{- if not (hasKey .Values.wiremock_istance_local.ingress.annotations "kubernetes.io/ingress.class") }}
-  {{- $_ := set .Values.wiremock_istance_local.ingress.annotations "kubernetes.io/ingress.class" .Values.wiremock_istance_local.ingress.className}}
-  {{- end }}
-{{- end }}
-{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+{{- if .Values.wiremock_instance_local.ingress.enabled -}}
 apiVersion: networking.k8s.io/v1
-{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
-apiVersion: networking.k8s.io/v1beta1
-{{- else -}}
-apiVersion: extensions/v1beta1
-{{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
-  labels:
-    {{- include "wiremock.labels" . | nindent 4 }}
-  {{- with .Values.wiremock_istance_local.ingress.annotations }}
+  name: {{ .Values.wiremock_instance_local.ingress.name }}
   annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-spec:
-  {{- if and .Values.wiremock_istance_local.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
-  ingressClassName: {{ .Values.wiremock_istance_local.ingress.className }}
-  {{- end }}
-  {{- if .Values.wiremock_istance_local.ingress.tls }}
-  tls:
-    {{- range .Values.wiremock_istance_local.ingress.tls }}
-    - hosts:
-        {{- range .hosts }}
-        - {{ . | quote }}
-        {{- end }}
-      secretName: {{ .secretName }}
+    {{- if .Values.wiremock_instance_local.ingress.tlsEnabled }}
+    # Ensure that the ingress controller is set up for TLS termination (using cert-manager or other mechanisms)
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    {{- else }}
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
     {{- end }}
+    kubernetes.io/ingress.class: nginx
+spec:
+  {{- if .Values.spring_instance_local.ingress.tlsEnabled }}
+  tls:
+    - hosts:
+        - {{ .Values.spring_instance_local.ingress.host }}
+      secretName: {{ .Values.spring_instance_local.ingress.tlsSecretName }}
   {{- end }}
   rules:
-    {{- range .Values.wiremock_istance_local.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - host: {{ .Values.spring_instance_local.ingress.host }}
       http:
         paths:
-          {{- range .paths }}
-          - path: {{ .path }}
-            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
-            pathType: {{ .pathType }}
-            {{- end }}
+          - path: /
+            pathType: Prefix
             backend:
-              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
-                name: {{ $fullName }}
+                name: {{ .Values.spring_instance_local.service.name }}
                 port:
-                  number: {{ $svcPort }}
-              {{- else }}
-              serviceName: {{ $fullName }}
-              servicePort: {{ $svcPort }}
-              {{- end }}
-          {{- end }}
-    {{- end }}
+                  number: {{ .Values.spring_instance_local.service.ports.port }}
 {{- end }}

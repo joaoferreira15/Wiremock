@@ -3,13 +3,11 @@ kind: Service
 metadata:
   name: {{ .Values.wiremock_istance_local.service.name }}
   labels:
-    {{- include "wiremock.labels" . | nindent 4 }}
+    app: {{ .Values.wiremock_istance_local.service.name }}
 spec:
   type: {{ .Values.wiremock_istance_local.service.type }}
   ports:
-    - port: {{ .Values.wiremock_istance_local.service.externalPort }}
-      targetPort: {{ .Values.wiremock_istance_local.service.internalPort }}
-      protocol: TCP
-      name: {{ include "wiremock.fullname" . }}
+    - port: {{ .Values.wiremock_istance_local.service.ports.port }}
+      targetPort: {{ .Values.wiremock_istance_local.service.ports.targetPort }}
   selector:
-    {{- include "wiremock.selectorLabels" . | nindent 4 }}
+    app: {{ .Values.wiremock_istance_local.deployment.name }}
