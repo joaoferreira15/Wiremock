@@ -5,23 +5,24 @@ metadata:
   labels:
     app: {{ .Values.wiremock_instance_local.deployment.name }}
 spec:
-  replicas: {{ .Values.spring_instance_local.replicaCount }}
+  replicas: {{ .Values.wiremock_instance_local.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Values.spring_instance_local.deployment.name }}
+      app: {{ .Values.wiremock_instance_local.deployment.name }}
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: {{ .Values.spring_instance_local.deployment.name }}
+        app: {{ .Values.wiremock_instance_local.deployment.name }}
     spec:
       containers:
-      - name: {{ .Values.spring_instance_local.deployment.container.name }}
-        image: "{{ .Values.spring_instance_local.image.repository }}:{{ .Values.spring_instance_local.image.tag }}"
-        imagePullPolicy: {{ .Values.spring_instance_local.image.pullPolicy }}
+      - name: {{ .Values.wiremock_instance_local.deployment.container.name }}
+        image: "{{ .Values.wiremock_instance_local.image.repository }}:{{ .Values.wiremock_instance_local.image.tag }}"
+        imagePullPolicy: {{ .Values.wiremock_instance_local.image.pullPolicy }}
+        args: {{ .Values.wiremock_instance_local.args }}
         ports:
-        - containerPort: {{ .Values.spring_instance_local.deployment.container.port }}
+        - containerPort: {{ .Values.wiremock_instance_local.deployment.container.port }}
         volumeMounts:
         - name: mappings-data
           mountPath: /home/wiremock/mappings
@@ -39,11 +40,11 @@ spec:
             scheme: {{ .Values.wiremock_instance_local.scheme }}
         resources:
           limits:
-            cpu: {{ .Values.spring_instance_local.resources.limits.cpu }}
-            memory: {{ .Values.spring_instance_local.resources.limits.memory }}
+            cpu: {{ .Values.wiremock_instance_local.resources.limits.cpu }}
+            memory: {{ .Values.wiremock_instance_local.resources.limits.memory }}
           requests:
-            cpu: {{ .Values.spring_instance_local.resources.requests.cpu }}
-            memory: {{ .Values.spring_instance_local.resources.requests.memory }}
+            cpu: {{ .Values.wiremock_instance_local.resources.requests.cpu }}
+            memory: {{ .Values.wiremock_instance_local.resources.requests.memory }}
       volumes:
       - name: mappings-data
         hostPath:

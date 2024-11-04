@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.wiremock_istance_local.service.name }}
+  name: {{ .Values.wiremock_instance_local.service.name }}
   labels:
-    app: {{ .Values.wiremock_istance_local.service.name }}
+    app: {{ .Values.wiremock_instance_local.service.name }}
 spec:
-  type: {{ .Values.wiremock_istance_local.service.type }}
+  type: {{ .Values.wiremock_instance_local.service.type }}
   ports:
-    - port: {{ .Values.wiremock_istance_local.service.ports.port }}
-      targetPort: {{ .Values.wiremock_istance_local.service.ports.targetPort }}
+    - port: {{ .Values.wiremock_instance_local.service.ports.port }}
+      targetPort: {{ .Values.wiremock_instance_local.service.ports.targetPort }}
   selector:
-    app: {{ .Values.wiremock_istance_local.deployment.name }}
+    app: {{ .Values.wiremock_instance_local.deployment.name }}

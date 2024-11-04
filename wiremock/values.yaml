@@ -119,6 +119,11 @@ wiremock_instance_local:
     container:
       name: wiremock-instance-local
       port: 8080
+  args:
+  - "--port=8080"
+  - "--max-request-journal=1000"
+  - "--local-response-templating"
+  - "--root-dir=/home/wiremock/storage"
   service:
     name: wiremock-instance-local
     type: ClusterIP
@@ -145,12 +150,6 @@ wiremock_instance_local:
     hosts: wiremock-instance.minikube.local
     tls: 
       enabled: false
-
-  args:
-    - "--port=8080"
-    - "--max-request-journal=1000"
-    - "--local-response-templating"
-    - "--root-dir=/home/wiremock/storage"
 
   autoscaling:
     enabled: false
