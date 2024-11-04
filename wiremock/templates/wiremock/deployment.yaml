@@ -44,9 +44,9 @@ spec:
       volumes:
       - name: mappings-data
         hostPath:
-          path: "/mnt/c/Users/joao.a.ferreira/OneDrive - ANF - Associação Nacional das Farmácias/Desktop/Tarefas/Repos/mappings"
+          path: '/mnt/c/Users/joao.a.ferreira/OneDrive - ANF - Associação Nacional das Farmácias/Desktop/Tarefas/Repos/responses'
           type: Directory
       - name: responses-data
         hostPath:
-          path: "/mnt/c/Users/joao.a.ferreira/OneDrive - ANF - Associação Nacional das Farmácias/Desktop/Tarefas/Repos/responses"
+          path: '/mnt/c/Users/joao.a.ferreira/OneDrive - ANF - Associação Nacional das Farmácias/Desktop/Tarefas/Repos/responses'
           type: Directory
