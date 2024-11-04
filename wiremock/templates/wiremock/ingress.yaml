@@ -1,9 +1,9 @@
-{{- if .Values.ingress.wiremock_instance_local.enabled -}}
+{{- if .Values.wiremock_instance_local.ingress.enabled -}}
 {{- $fullName := include "wiremock.fullname" . -}}
-{{- $svcPort := .Values.service.externalPort -}}
-{{- if and .Values.ingress.wiremock_instance_local.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
-  {{- if not (hasKey .Values.ingress.wiremock_instance_local.annotations "kubernetes.io/ingress.wiremock_instance_local.class") }}
-  {{- $_ := set .Values.ingress.wiremock_instance_local.annotations "kubernetes.io/ingress.wiremock_instance_local.class" .Values.ingress.wiremock_instance_local.className}}
+{{- $svcPort := .Values.wiremock_instance_local.service.externalPort -}}
+{{- if and .Values.wiremock_instance_local.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
+  {{- if not (hasKey .Values.wiremock_instance_local.ingress.annotations "kubernetes.io/ingress.class") }}
+  {{- $_ := set .Values.wiremock_instance_local.ingress.annotations "kubernetes.io/ingress.class" .Values.wiremock_instance_local.ingress.className}}
   {{- end }}
 {{- end }}
 {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
@@ -18,17 +18,17 @@ metadata:
   name: {{ $fullName }}
   labels:
     {{- include "wiremock.labels" . | nindent 4 }}
-  {{- with .Values.ingress.wiremock_instance_local.annotations }}
+  {{- with .Values.wiremock_instance_local.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if and .Values.ingress.wiremock_instance_local.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
-  ingressClassName: {{ .Values.ingress.wiremock_instance_local.className }}
+  {{- if and .Values.wiremock_instance_local.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
+  ingressClassName: {{ .Values.wiremock_instance_local.ingress.className }}
   {{- end }}
-  {{- if .Values.ingress.wiremock_instance_local.tls }}
+  {{- if .Values.wiremock_instance_local.ingress.tls }}
   tls:
-    {{- range .Values.ingress.wiremock_instance_local.tls }}
+    {{- range .Values.wiremock_instance_local.ingress.tls }}
     - hosts:
         {{- range .hosts }}
         - {{ . | quote }}
@@ -37,7 +37,7 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.ingress.wiremock_instance_local.hosts }}
+    {{- range .Values.wiremock_instance_local.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:
