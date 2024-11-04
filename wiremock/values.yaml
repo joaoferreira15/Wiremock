@@ -183,6 +183,14 @@ wiremock_instance_local:
     externalPort: 8080
     internalPort: 8080
 
+  probes:
+    liveness:
+      initialDelaySeconds: 100
+      periodSeconds: 10
+    readiness:
+      initialDelaySeconds: 100
+      periodSeconds: 10
+
   ingress:
     enabled: false
     className: ""
