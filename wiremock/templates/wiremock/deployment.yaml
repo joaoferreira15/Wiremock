@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "wiremock.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.wiremock_instance_local.wireautoscaling.enabled }}
+  {{- if not .Values.wiremock_instance_local.autoscaling.enabled }}
   replicas: {{ .Values.wiremock_instance_local.replicaCount }}
   {{- end }}
   selector:
