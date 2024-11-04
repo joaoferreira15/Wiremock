@@ -6,11 +6,13 @@ metadata:
     {{- include "wiremock.labels" . | nindent 4 }}
 data:
   {{- $files := .Files }}
-  {{- range $key, $value := .Files }}
-  {{- if hasPrefix "mappings/" $key }} {{/* only when in mappings/ */}}
-  {{ $key | trimPrefix "mappings/" }}: {{ $files.Get $key | quote }} {{/* adapt $key as desired */}}
+  {{- range $key, $value := $files }}
+  {{- if hasPrefix "mappings/" $key }}
+  {{ $key | trimPrefix "mappings/" | replace "/" "_" }}: |
+    {{ $files.Get $key | indent 4 }}
   {{- end }}
   {{- end }}
   {{- with .Values.wiremock_istance_local.mappings }}
   {{- toYaml . | nindent 2 }}
   {{- end }}
+
