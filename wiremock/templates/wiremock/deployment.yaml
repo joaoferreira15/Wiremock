@@ -30,14 +30,10 @@ spec:
           mountPath: /home/wiremock/__files
         livenessProbe:
           httpGet:
-            path: /__admin/health
-            port: {{ .Values.wiremock_instance_local.service.internalPort }}
-            scheme: {{ .Values.wiremock_instance_local.scheme }}
-        readinessProbe:
-          httpGet:
-            path: /__admin/health
-            port: {{ .Values.wiremock_instance_local.service.internalPort }}
-            scheme: {{ .Values.wiremock_instance_local.scheme }}
+              path: /__admin/health
+              port: {{ .Values.deployment.container.port }}
+          initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
+          periodSeconds:  {{ .Values.probes.liveness.periodSeconds }}
         resources:
           limits:
             cpu: {{ .Values.wiremock_instance_local.resources.limits.cpu }}
