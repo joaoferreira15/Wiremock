@@ -178,7 +178,7 @@ wiremock_instance_local:
     #   type: "RuntimeDefault"
 
   service:
-    name: wiremock-instance-service-local
+    name: wiremock-instance-local
     type: ClusterIP
     externalPort: 8080
     internalPort: 8080
