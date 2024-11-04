@@ -6,10 +6,9 @@ metadata:
     {{- include "wiremock.labels" . | nindent 4 }}
 data:
   {{- $files := .Files }}
-  {{- range $key, $value := $files }}
-  {{- if hasPrefix "responses/" $key }}
-  {{ $key | trimPrefix "responses/" | replace "/" "_" }}: |
-    {{ $files.Get $key | indent 4 }}
+  {{- range $key, $value := .Files }}
+  {{- if hasPrefix $key "responses/" }} {{/* only when in responses/ */}}
+  {{ $key | trimPrefix "responses/" | replace "/" "_" }}: {{ $files.Get $key | quote }} {{/* adapt $key as desired */}}
   {{- end }}
   {{- end }}
   {{- with .Values.wiremock_istance_local.responses }}
