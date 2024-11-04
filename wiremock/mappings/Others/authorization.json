@@ -1,0 +1,15 @@
+{
+    "priority": 2,
+    "request": {
+      "method": "GET",
+      "urlPathPattern": "/isAuthorized/(.*)"
+    },
+    "response": {
+      "status": 200,
+      "body": "{ \"isAuthorized\": true }",
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    }
+  }
+  
