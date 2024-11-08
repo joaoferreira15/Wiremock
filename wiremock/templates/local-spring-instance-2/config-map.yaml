@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ .Values.spring_instance_local_2.configMap.name }}
-data:
-  JAVA_HOME: "/usr/local/openjdk-21"
