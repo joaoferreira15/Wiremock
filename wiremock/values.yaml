@@ -38,7 +38,50 @@ spring_instance_local:
     enabled: true
     host: "spring-instance.minikube.local"
     tls:
-      enabled: false 
+      enabled: false
+
+
+ 
+spring_instance_local_2:
+  image:
+    repository: joaoferreira17/springboot-instance-image
+    tag: 1.0.1
+    pullPolicy: Always
+  imagePullSecrets:
+    enabled: false
+  configMap:
+    name: spring-instance-2-configmap-local
+  deployment:
+    name: spring-instance-2-deployment-local
+    container:
+      name: spring-instance-2-local
+      port: 8081
+  service:
+    name: spring-instance-2-service-local
+    type: LoadBalancer
+    ports:
+      port: 8081
+      targetPort: 8081
+  probes:
+    liveness:
+      initialDelaySeconds: 100
+      periodSeconds: 10
+    readiness:
+      initialDelaySeconds: 100
+      periodSeconds: 10
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "500m"
+  ingress:
+    name: spring-instance-2-ingress-local
+    enabled: true
+    host: "spring-instance-2.minikube.local"
+    tls:
+      enabled: false
 
 
 
