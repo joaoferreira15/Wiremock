@@ -87,7 +87,7 @@ spring_instance_local_2:
 
 # mysql-instance-local
 mysql_instance_local:
-  replicaCount: 2
+  replicaCount: 7
   image:
     repository: joaoferreira17/my-sql-instance-image
     tag: 1.0.0
@@ -103,6 +103,70 @@ mysql_instance_local:
       port: 3306
   service:
     name: mysql-service-local
+    type: ClusterIP
+    ports:
+      port: 3306
+      targetPort: 3306
+  probes:
+    liveness:
+      # MySQL's startup time
+      initialDelaySeconds: 60
+      periodSeconds: 30
+      timeoutSeconds: 5
+      failureThreshold: 3
+      successThreshold: 1
+      exec:
+        command:
+          - mysqladmin
+          - ping
+          - "-h"
+          - "127.0.0.1"
+    readiness:
+      initialDelaySeconds: 60
+      periodSeconds: 30
+      timeoutSeconds: 5
+      failureThreshold: 3
+      successThreshold: 1
+      exec:
+        command:
+          - mysqladmin
+          - ping
+          - "-h"
+          - "127.0.0.1"
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "500m"
+  ingress:
+    enabled: false
+  persistence:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 8Gi
+    annotations: {}
+
+
+
+mysql_instance_local_2:
+  replicaCount: 7
+  image:
+    repository: joaoferreira17/my-sql-instance-image
+    tag: 1.0.0
+    pullPolicy: IfNotPresent
+  imagePullSecrets:
+    enabled: false
+  configMap:
+    name: mysql-2-configmap-local
+  deployment:
+    name: mysql-2-deployment-local
+    container:
+      name: mysql-2-instance-local
+      port: 3306
+  service:
+    name: mysql-2-service-local
     type: ClusterIP
     ports:
       port: 3306
