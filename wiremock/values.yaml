@@ -87,6 +87,7 @@ spring_instance_local_2:
 
 # mysql-instance-local
 mysql_instance_local:
+  replicaCount: 2
   image:
     repository: joaoferreira17/my-sql-instance-image
     tag: 1.0.0
