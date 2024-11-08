@@ -1,5 +1,5 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: {{ include "wiremock.fullname" . }}
   labels:
@@ -8,6 +8,14 @@ spec:
   {{- if not .Values.wiremock_instance_local.autoscaling.enabled }}
   replicas: {{ .Values.wiremock_instance_local.replicaCount }}
   {{- end }}
+  strategy:
+        canary:
+            steps:
+                - setWeight: 20
+                - pause: {}                
+                - setWeight: 50
+                - pause: {}
+                - setWeight: 100
   selector:
     matchLabels:
       {{- include "wiremock.selectorLabels" . | nindent 6 }}

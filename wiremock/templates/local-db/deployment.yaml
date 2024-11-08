@@ -1,5 +1,5 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
     name: {{ .Values.mysql_instance_local.deployment.name }}
     labels:
@@ -10,7 +10,13 @@ spec:
         matchLabels:
             app: {{ .Values.mysql_instance_local.deployment.name }}
     strategy:
-        type: RollingUpdate
+        canary:
+            steps:
+                - setWeight: 20
+                - pause: {}                
+                - setWeight: 50
+                - pause: {}
+                - setWeight: 100
     template:
         metadata:
             labels:
